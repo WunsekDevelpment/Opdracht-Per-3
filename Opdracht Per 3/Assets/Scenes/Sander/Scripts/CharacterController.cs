@@ -10,13 +10,6 @@ public class NewBehaviourScript : MonoBehaviour
     public float speed;
     public float sensitivity;
     public Transform cam;
-
-
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
     void Update()
     {
         moveDir.x = Input.GetAxis("Horizontal");
