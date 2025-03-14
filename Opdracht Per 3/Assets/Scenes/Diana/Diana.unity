@@ -931,7 +931,7 @@ MonoBehaviour:
   verInput: 0
   baseSpeed: 3
   currentSpeed: 0
-  sprint: 1.5
+  sprint: 3
   orientation: {fileID: 637822343}
   playerCamera: {fileID: 843150851}
   groundDrag: 9
@@ -941,7 +941,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
-  bobbingSpeed: 9
+  bobbingSpeed: 10
   bobbingAmount: 0.02
   timer: 0
   defaultPosY: 0
