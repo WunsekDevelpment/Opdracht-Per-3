@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
@@ -26,10 +27,11 @@ namespace Player
         public float airDrag;
         public float playerHeight;
         public LayerMask whatIsGround;
-        bool isGrounded;
+        public bool isGrounded;
 
         void Start()
         {
+            isGrounded = true;
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
         }
@@ -53,7 +55,7 @@ namespace Player
             horInput = Input.GetAxisRaw("Horizontal");
             verInput = Input.GetAxisRaw("Vertical");
 
-            if(horInput != 0)
+            if(horInput != 0 || verInput != 0)
             {
                 isMoving = true;
             }
@@ -65,6 +67,7 @@ namespace Player
             if(isMoving)
             {
                 MovePlayer();
+                BobHead();
             }
         }
 
@@ -83,6 +86,11 @@ namespace Player
             {
                 currentSpeed = baseSpeed;
             }
+        }
+
+        void BobHead()
+        {
+
         }
     }
 }
