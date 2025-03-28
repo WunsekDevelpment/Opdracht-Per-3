@@ -1,58 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using TMPro; 
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
-    public TMP_Text dialogueText;
-    public GameObject dialoguePanel;
-    private string[] currentDialogue;
-    private int dialogueIndex;
-    private bool isTalking = false;
+    [SerializeField] private GameObject dialogueUI;
+    [SerializeField] private TextMeshProUGUI speakerText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private float typingSpeed = 0.05f;
 
-    void Awake()
+    // Add this line to declare the array for scripts to disable
+    [SerializeField] private MonoBehaviour[] scriptsToDisableDuringDialogue;
+
+    private string[] currentDialogueLines;
+    private int currentLineIndex;
+    private bool isTyping;
+    private Coroutine typingCoroutine;
+
+    private void Start()
     {
-        if (Instance == null)
+        dialogueUI.SetActive(false); // Dialogue UI starts hidden
+    }
+
+    public void StartDialogue(string speakerName, string[] lines)
+    {
+        currentDialogueLines = lines;
+        currentLineIndex = 0;
+        dialogueUI.SetActive(true);
+        speakerText.text = speakerName;
+
+        // Disable all specified scripts during dialogue
+        foreach (var script in scriptsToDisableDuringDialogue)
         {
-            Instance = this;
-            Debug.Log("DialogueManager initialized");
+            if (script != null) script.enabled = false;
         }
-        else
+
+        DisplayNextLine();
+    }
+
+    private void Update()
+    {
+        if (dialogueUI.activeSelf && Input.GetKeyDown(KeyCode.Space) && !isTyping)
         {
-            Debug.LogWarning("Multiple DialogueManagers detected!");
+            DisplayNextLine();
         }
-        if (dialoguePanel == null) Debug.LogError("DialoguePanel is not assigned!");
-        if (dialogueText == null) Debug.LogError("DialogueText is not assigned!");
-        dialoguePanel.SetActive(false);
-        Debug.Log("Panel set inactive at start");
-    }
-    void Update()
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void StartDialogue(string npcName, string[] dialogue)
+    private void DisplayNextLine()
     {
-        Debug.Log("Starting dialogue for " + npcName);
-        isTalking = true;
-        dialoguePanel.SetActive(true);
-        Debug.Log("Panel set active: " + dialoguePanel.activeSelf);
-        currentDialogue = dialogue;
-        dialogueIndex = 0;
-        DisplayText(npcName);
-        print(dialoguePanel.activeSelf);
-    }
-
-    public void NextLine()
-    {
-        Debug.Log("NextLine called");
-        dialogueIndex++;
-        if (dialogueIndex < currentDialogue.Length)
+        if (currentLineIndex < currentDialogueLines.Length)
         {
-            DisplayText("");
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
+            typingCoroutine = StartCoroutine(TypeLine(currentDialogueLines[currentLineIndex]));
+            currentLineIndex++;
         }
         else
         {
@@ -60,24 +64,30 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void DisplayText(string npcName)
+    private IEnumerator TypeLine(string line)
     {
-        string newText = npcName + ": " + currentDialogue[dialogueIndex];
-        dialogueText.text = newText;
-        Debug.Log("Text set to: " + newText);
+        isTyping = true;
+        dialogueText.text = "";
+
+        foreach (char letter in line.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        isTyping = false;
     }
 
     private void EndDialogue()
     {
-        Debug.Log("Ending dialogue");
-        isTalking = false;
-        dialoguePanel.SetActive(false);
-        Debug.Log("Panel set inactive");
-    }
+        dialogueUI.SetActive(false);
+        currentDialogueLines = null;
+        currentLineIndex = 0;
 
-    public bool IsTalking()
-    {
-        return isTalking;
+        // Re-enable all specified scripts when dialogue ends
+        foreach (var script in scriptsToDisableDuringDialogue)
+        {
+            if (script != null) script.enabled = true;
+        }
     }
 }
-
