@@ -2,10 +2,11 @@ using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal.Internal;
 
 public class PauseMenuScript : MonoBehaviour
 {
-    public Canvas pauseCanvas;
+    public Canvas pauseMenu;
     public Canvas mainMenu;
     public GameObject player;
     public bool inMainMenu;
@@ -14,7 +15,7 @@ public class PauseMenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pauseCanvas.GetComponent<Canvas>().enabled = false;
+        pauseMenu.GetComponent<Canvas>().enabled = false;
     }
 
     // Update is called once per frame
@@ -26,7 +27,7 @@ public class PauseMenuScript : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape) && !inMainMenu)
         {
-            pauseCanvas.GetComponent<Canvas>().enabled = !pauseCanvas.GetComponent<Canvas>().enabled;
+            pauseMenu.GetComponent<Canvas>().enabled = !pauseMenu.GetComponent<Canvas>().enabled;
             player.GetComponent<PlayerMovement>().enabled = !player.GetComponent<PlayerMovement>().enabled;
         }
     }
