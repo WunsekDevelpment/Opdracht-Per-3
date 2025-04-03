@@ -20,8 +20,8 @@ namespace Player
         void Start()
         {
             //Lock and hide the cursor.
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
         }
     
         public void Update()
