@@ -11123,8 +11123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca35b92111d1e340bbfd00850a84e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensY: 500
-  sensX: 500
+  sensY: 125
+  sensX: 125
   Orientation: {fileID: 1290167219}
   rotationClamp: 1
   rotationClampValue: 90
@@ -19795,20 +19795,20 @@ MonoBehaviour:
   isMoving: 0
   horInput: 0
   verInput: 0
-  baseSpeed: 5
-  currentSpeed: 0
-  sprint: 0
+  baseSpeed: 7
+  currentSpeed: 7
+  sprint: 1.5
   orientation: {fileID: 1290167219}
   playerCamera: {fileID: 638025940}
-  groundDrag: 25
-  airDrag: 25
+  groundDrag: 7
+  airDrag: 4
   playerHeight: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
-  bobbingSpeed: 0
-  bobbingAmount: 0
+  bobbingSpeed: 10
+  bobbingAmount: 0.025
   timer: 0
   defaultPosY: 0
 --- !u!54 &1243647740
